@@ -74,22 +74,32 @@ class Grid {
   }
 
   checkDiagonal = (player: number, row: number, column: number): number | null => {
-    for (let i = 0; i < WINNER_CONDITION; i++) {
-      let count = 0;
+    for (let k = 0; k < 2; k++) {
+      const isLeftToRight = k === 0 ? true : false;
 
-      if (row - i >= 0 && column - i >= 0) {
-        for (let j = 0; j < WINNER_CONDITION; j++) {
-          if (
-            row - i + j < MAX_NUMBER_OF_ROW
-            && column - i + j < MAX_NUMBER_OF_COL
-            && this.cells[row - i + j][column - i + j] === player
-          ) {
-            count += 1;
+      for (let i = 0; i < WINNER_CONDITION; i++) {
+        let count = 0;
+        const [startRowPos, startColPos] = isLeftToRight ? [row - i, column - i] : [row + i, column - i];
+
+        if (startRowPos >= 0 && startColPos >= 0) {
+          for (let j = 0; j < WINNER_CONDITION; j++) {
+            const nextRowPos = (startRowPos + (isLeftToRight ? j : -j));
+            const nextColPos = startColPos + j;
+
+            if (
+              nextRowPos >= 0
+              && nextColPos >= 0
+              && nextRowPos < MAX_NUMBER_OF_ROW
+              && nextColPos < MAX_NUMBER_OF_COL
+              && this.cells[nextRowPos][nextColPos] === player
+            ) {
+              count += 1;
+            }
           }
-        }
 
-        if (count === 4) {
-          return player;
+          if (count === 4) {
+            return player;
+          }
         }
       }
     }

@@ -89,7 +89,7 @@ describe("Connect 4", () => {
     expect(row).toBeNull();
   });
 
-  it("Test for diagonal", () => {
+  it("Test for diagonal R", () => {
     /* Given */
     const grid = new Grid();
     grid.player1Action(0);
@@ -105,10 +105,45 @@ describe("Connect 4", () => {
     grid.player1Action(2);
     grid.player2Action(3);
 
+    /*      [1]
+     *     1 2
+     * 2 1 2 1
+     * 1 1 1 2 2 2
+     */  
+
     /* When */
     const row = grid.player1Action(3);
     const winner = grid.checkWinner(row, 3);
 
     expect(winner).toBe(1);
+  });
+
+  it("Test for diagonal L", () => {
+    /* Given */
+    const grid = new Grid();
+    grid.player1Action(0);
+    grid.player2Action(1);
+    grid.player1Action(2);
+    grid.player2Action(3);
+    grid.player1Action(0);
+    grid.player2Action(4);
+    grid.player1Action(1);
+    grid.player2Action(2);
+    grid.player1Action(4);
+    grid.player2Action(3);
+    grid.player1Action(0);
+    grid.player2Action(0);
+    grid.player1Action(5);
+
+    /* 2    
+     * 1[2]
+     * 1 1 2 2 1
+     * 1 2 1 2 2 1
+     */  
+    /* When */
+    const row = grid.player2Action(1);
+    const winner = grid.checkWinner(row, 1);
+
+    expect(winner).toBe(2);
   });
 });
